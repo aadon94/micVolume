@@ -71,7 +71,7 @@ public class MicVolumePlugin extends CordovaPlugin
  
     private void read(CallbackContext callbackContext) throws JSONException
     {
-       if (audioRecord = null) {
+       if (micOn != true) {
         buflen = AudioRecord.getMinBufferSize(freq, chan, enc);
         audioRecord = new AudioRecord(src,freq,chan,enc,buflen);
        }
