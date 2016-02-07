@@ -50,7 +50,6 @@ public class MicVolumePlugin extends CordovaPlugin
     private int bufferSize= 1024;
     private float volume = 0;
     private int buflen;
-    boolean micOn = false;
     int freq = 8000;
     int chan = AudioFormat.CHANNEL_IN_MONO;
         int enc  = AudioFormat.ENCODING_PCM_16BIT;
@@ -64,17 +63,13 @@ public class MicVolumePlugin extends CordovaPlugin
         audioRecord.startRecording();
         buffer = new short[bufferSize];
         
-        micOn = true;
-
         callbackContext.success();
     }
  
     private void read(CallbackContext callbackContext) throws JSONException
     {
-       if (micOn != true) {
         buflen = AudioRecord.getMinBufferSize(freq, chan, enc);
         audioRecord = new AudioRecord(src,freq,chan,enc,buflen);
-       }
 
       JSONObject returnObj = new JSONObject();
     
@@ -87,17 +82,13 @@ public class MicVolumePlugin extends CordovaPlugin
         amplitude = Math.abs((sumLevel / bufferReadResult));
 
         returnObj.put("volume", Math.sqrt(amplitude));
-        micOn = true;
        callbackContext.success(returnObj);
     }
 
     private void stop(CallbackContext callbackContext) {
-     if (micOn = true) {
       audioRecord.stop();
       audioRecord.release();
       audioRecord = null;
-      micOn = false;
-     }
 
       callbackContext.success();
     } 
